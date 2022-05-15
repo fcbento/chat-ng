@@ -1,14 +1,53 @@
-<form class="form">
-
+<form class="form" [formGroup]="form" (submit)="login()" *ngIf="!(loading$ | async)">
     <mat-form-field appearance="outline" floatLabel="always">
         <input matInput placeholder="Email" formControlName="email">
         <mat-icon matSuffix>email</mat-icon>
+
+        <mat-error 
+            *ngIf="form.get('email')?.hasError('pattern') &&
+                   form.get('email')?.touched">
+            Email not valid
+        </mat-error>
+
+        <mat-error 
+            *ngIf="form.get('email')?.hasError('required') && 
+                   form.get('email')?.touched">
+            Email is required
+        </mat-error>
+
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
         <input matInput placeholder="Password" formControlName="password" type="password">
+        
+        <mat-error 
+            *ngIf="form.get('password')?.hasError('minlength') &&
+                   form.get('password')?.touched">
+            Minimum is 6
+        </mat-error>
+
+        <mat-error 
+            *ngIf="form.get('password')?.hasError('required') && 
+                   form.get('password')?.touched">
+            Password is required
+        </mat-error>
+
         <mat-icon matSuffix>lock</mat-icon>
     </mat-form-field>
 
-    <button mat-raised-button color="primary">Login</button>
+    <button
+        mat-raised-button color="primary"
+        [disabled]="form.get('email')?.hasError('required') || 
+                    form.get('email')?.hasError('pattern')  ||
+                    form.get('password')?.hasError('required') || 
+                    form.get('password')?.hasError('minlength')">
+        Login
+    </button>
+    <small *ngIf="error$ | async">{{error$ | async}}</small>
 </form>
+
+<div class="row center-xs">
+    <mat-spinner *ngIf="loading$ | async"></mat-spinner>
+</div>
+
+

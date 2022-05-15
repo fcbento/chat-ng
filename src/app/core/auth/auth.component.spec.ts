@@ -64,7 +64,7 @@ describe('AuthComponent', () => {
 
   describe('render login and register components', () => {
 
-    it('should click login button', fakeAsync(() => {
+    it('should render login component when clicked login button ', fakeAsync(() => {
       const onClickMock = spyOn(component, 'authOption');
       fixture.debugElement.query(By.css('.btn-login')).triggerEventHandler('click', null);
       component.renderLogin = true;
@@ -74,7 +74,7 @@ describe('AuthComponent', () => {
       expect(fixture.nativeElement.querySelector('form')).toBeTruthy();
     })); 
 
-    it('should click register button', fakeAsync(() => {
+    it('should render register component when clicked register button', fakeAsync(() => {
       const onClickMock = spyOn(component, 'authOption');
       fixture.debugElement.query(By.css('.btn-register')).triggerEventHandler('click', null);
       expect(onClickMock).toHaveBeenCalledWith('register');
