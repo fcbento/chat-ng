@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { AuthLogin } from '../../state/auth.action';
@@ -16,6 +17,7 @@ export class LoginComponent implements AfterViewInit {
 
   @Select(AuthState.error) error$!: Observable<any>;
   @Select(AuthState.loading) loading$!: Observable<boolean>;
+  @Select(AuthState.redirect) redirect$!: Observable<boolean>;
 
   public form: FormGroup;
   private authUtils;
@@ -23,7 +25,8 @@ export class LoginComponent implements AfterViewInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _store: Store,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private _router: Router) {
 
     this.authUtils = new AuthUtils();
 
@@ -34,11 +37,23 @@ export class LoginComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.error$.subscribe(error => {
+    this.showError();
+    this.redirect();
+  }
+
+  showError(): void {
+    this.error$.subscribe((error: string) => {
       if (error) this._snackBar.open(error, 'Close');
-      this._snackBar
-          ._openedSnackBarRef?.afterDismissed()
-          .subscribe(this._store.reset('AuthLogin'))
+      this
+        ._snackBar
+        ._openedSnackBarRef?.afterDismissed()
+        .subscribe(this._store.reset('AuthLogin'));
+    });
+  }
+
+  redirect(): void {
+    this.redirect$.subscribe((redirect: boolean) => {
+      if (redirect) this._router.navigate(['home']);
     });
   }
 

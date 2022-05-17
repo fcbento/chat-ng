@@ -7,6 +7,7 @@ export interface AuthStateModel {
     error: any;
     loading: boolean;
     user: AuthUser;
+    redirect: boolean;
 }
 
 export interface AuthResponse {

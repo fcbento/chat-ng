@@ -1,0 +1,33 @@
+<mat-drawer-container class="row col-xs-12 home-container" autosize>
+    <mat-drawer #drawer class="sidenav" mode="side">
+        <p>Auto-resizing sidenav</p>
+        <p>Auto-resizing sidenav</p>
+        <p>Auto-resizing sidenav</p>
+    </mat-drawer>
+
+    <div class="sidenav-content">
+        <mat-toolbar>
+
+            <button mat-icon-button>
+                <mat-icon (click)="drawer.toggle()">menu</mat-icon>
+            </button>
+
+            <span>{{(user$ | async)?.name}}</span>
+
+            <span class="spacer"></span>
+
+            <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+            </button>
+
+            <button mat-icon-button>
+                <mat-icon>share</mat-icon>
+            </button>
+
+        </mat-toolbar>
+        <div class="content">
+            <h1>content</h1>
+        </div>
+    </div>
+
+</mat-drawer-container>
