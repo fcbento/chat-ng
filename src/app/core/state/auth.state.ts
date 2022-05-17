@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { catchError, finalize, map, Observable, of } from 'rxjs';
+import { Action, Selector, StateContext } from '@ngxs/store';
+import { catchError, finalize, map, of } from 'rxjs';
+import { AuthUtils } from '../auth/auth.utils';
 import { AuthResponse, AuthStateModel } from '../models/auth.model';
 import { AuthService } from '../services/auth.service';
 import { AuthLogin } from './auth.action';
 
 @Injectable()
 export class AuthState {
+  
+  utils = new AuthUtils();
 
   constructor(private service: AuthService) { }
 
@@ -35,7 +38,8 @@ export class AuthState {
           ctx.patchState({ user: response.user })
         }),
         catchError((e: any) => {
-          return of(ctx.patchState({ error: e.error.message }));
+          const error = this.utils.handleError(e);
+          return of(ctx.patchState({ error: error }));
         }),
         finalize(() => ctx.patchState({ loading: false }))
       ).subscribe()
