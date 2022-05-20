@@ -46,6 +46,7 @@ export class AuthState {
         }),
         catchError((e: any) => {
           const error = this.utils.handleError(e);
+          ctx.patchState({ redirect: false })
           return of(ctx.patchState({ error: error }));
         }),
         finalize(() => ctx.patchState({ loading: false }))
