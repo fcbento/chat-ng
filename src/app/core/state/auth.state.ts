@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { catchError, finalize, map, of } from 'rxjs';
 import { AuthUtils } from '../auth/auth.utils';
 import { AuthResponse, AuthStateModel } from '../models/auth.model';
 import { AuthService } from '../services/auth.service';
-import { AuthLogin } from './auth.action';
+import { AuthLogin, SessionUser } from './auth.action';
 
 @Injectable()
 export class AuthState {
-  
+
   utils = new AuthUtils();
 
-  constructor(private service: AuthService) { }
+  constructor(
+    private service: AuthService,
+    private store: Store) { }
 
   @Selector()
   static error(state: AuthStateModel) {
@@ -24,25 +26,19 @@ export class AuthState {
   }
 
   @Selector()
-  static currentUser(state: AuthStateModel) {
-    return state.user;
-  }
-
-  @Selector()
   static redirect(state: AuthStateModel) {
     return state.redirect;
   }
 
   @Action(AuthLogin)
   login(ctx: StateContext<AuthStateModel>, action: AuthLogin) {
-    ctx.patchState({ error: null })
     ctx.patchState({ loading: true })
-    ctx.patchState({ redirect: false })
     this.service.login(action.auth)
       .pipe(
         map((response: AuthResponse) => {
-          ctx.patchState({ user: response.user })
-          ctx.patchState({ redirect: true })
+          ctx.patchState({ redirect: true });
+          ctx.patchState({ loading: false });
+          this.store.dispatch(new SessionUser(response.user));
         }),
         catchError((e: any) => {
           const error = this.utils.handleError(e);

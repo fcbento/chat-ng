@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthUser } from 'src/app/core/models/auth.model';
 import { AuthState } from 'src/app/core/state/auth.state';
+import { SessionState } from 'src/app/core/state/session.state';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { AuthState } from 'src/app/core/state/auth.state';
 })
 export class HomeComponent implements OnInit {
 
-  @Select(AuthState.currentUser) user$!: Observable<AuthUser>;
+  @Select(SessionState.user) user$!: Observable<AuthUser>;
 
   constructor() { }
 

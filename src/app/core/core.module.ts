@@ -10,6 +10,8 @@ import { NgxsModule } from '@ngxs/store';
 import { AuthState } from './state/auth.state';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SessionState } from './state/session.state';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
     CoreRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    [NgxsModule.forFeature([AuthState])],
+    [NgxsModule.forFeature([AuthState, SessionState])],
+    NgxsStoragePluginModule.forRoot({
+      key: 'user'
+    }),
     HttpClientModule
   ],
   providers: [

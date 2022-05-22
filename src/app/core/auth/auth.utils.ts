@@ -6,7 +6,7 @@ export class AuthUtils {
 
     handleError(error: any): string {
         if(error.error.message) {
-            return error.error.message
+            return error?.error?.message
         }else{
             return 'Something went wrong'
         }
