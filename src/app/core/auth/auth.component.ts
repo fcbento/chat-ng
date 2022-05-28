@@ -24,4 +24,11 @@ export class AuthComponent implements OnInit {
       this.renderRegister = true;
     }
   }
+
+  isSubmitted(value: boolean) {
+    if(value) {
+      this.renderLogin = true;
+      this.renderRegister = false;
+    }
+  }
 }

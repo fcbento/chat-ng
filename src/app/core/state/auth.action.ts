@@ -1,9 +1,14 @@
-import { AuthRequest, AuthUser } from '../models/auth.model';
+import { LoginRequest, AuthUser, RegisterRequest } from '../models/auth.model';
 import { AuthEnum } from './auth.enum';
 
 export class AuthLogin {
     static readonly type = AuthEnum.Login;
-    constructor(public auth: AuthRequest) { }
+    constructor(public auth: LoginRequest) { }
+}
+
+export class AuthRegister {
+    static readonly type = AuthEnum.Register;
+    constructor(public auth: RegisterRequest) { }
 }
 
 export class SessionUser {

@@ -1,25 +1,90 @@
-<form class="form">
+<form class="form" [formGroup]="form" (submit)="register()">
 
     <mat-form-field appearance="outline" floatLabel="always">
         <input matInput placeholder="Name" formControlName="name">
-        <mat-icon matSuffix>face</mat-icon>
+        <mat-icon matSuffix>person</mat-icon>
+
+        <mat-error 
+            *ngIf="form.get('name')?.hasError('required') && 
+                   form.get('name')?.touched">
+            Name is required
+        </mat-error>
+
     </mat-form-field>
 
+    <mat-form-field appearance="outline" floatLabel="always">
+        <input matInput placeholder="Last name" formControlName="lastName">
+        <mat-icon matSuffix>person</mat-icon>
+
+        <mat-error 
+            *ngIf="form.get('lastName')?.hasError('required') && 
+                   form.get('lastName')?.touched">
+            Last name is required
+        </mat-error>
+
+    </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
         <input matInput placeholder="Email" formControlName="email">
         <mat-icon matSuffix>email</mat-icon>
+
+        <mat-error 
+            *ngIf="form.get('email')?.hasError('pattern') &&
+                   form.get('email')?.touched">
+            Email not valid
+        </mat-error>
+
+        <mat-error 
+            *ngIf="form.get('email')?.hasError('required') && 
+                   form.get('email')?.touched">
+            Email is required
+        </mat-error>
+
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
-        <input matInput placeholder="Password" formControlName="password" type="password">
-        <mat-icon matSuffix>lock</mat-icon>
+        <input matInput placeholder="Password" formControlName="password" [type]="showPassword ? 'password' : 'text' ">
+        
+        <mat-error 
+            *ngIf="form.get('password')?.hasError('minlength') &&
+                   form.get('password')?.touched">
+            Minimum is 6
+        </mat-error>
+
+        <mat-error 
+            *ngIf="form.get('password')?.hasError('required') && 
+                   form.get('password')?.touched">
+            Password is required
+        </mat-error>
+
+        <mat-icon matSuffix (click)="displayPassword('password')" *ngIf="showPassword">{{visibilityPassword}}</mat-icon>
+        <mat-icon matSuffix (click)="displayPassword('password')" *ngIf="!showPassword">{{visibilityPassword}}</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
-        <input matInput placeholder="Confirm password" formControlName="password" type="password">
-        <mat-icon matSuffix>lock</mat-icon>
+        <input matInput placeholder="Re-enter password" formControlName="rePassword" [type]="showRePassword ? 'password' : 'text' ">
+        
+        <mat-hint *ngIf="matchPasswords()"> Passwords don't match </mat-hint>
+
+        <mat-icon matSuffix (click)="displayPassword('rePassword')" *ngIf="showRePassword">{{visibilityRePassword}}</mat-icon>
+        <mat-icon matSuffix (click)="displayPassword('rePassword')" *ngIf="!showRePassword">{{visibilityRePassword}}</mat-icon>
     </mat-form-field>
 
-    <button mat-raised-button color="primary">Register</button>
+    <button
+        mat-raised-button color="primary"
+        [disabled]="form.get('email')?.hasError('required') || 
+                    form.get('email')?.hasError('pattern') ||
+                    form.get('password')?.hasError('required') || 
+                    form.get('password')?.hasError('minlength') ||
+                    form.get('rePassword')?.hasError('minlength') ||
+                    form.get('rePassword')?.hasError('required') ||
+                    matchPasswords()">
+        Login
+    </button>
 </form>
+<!-- 
+<div class="row center-xs">
+    <mat-spinner *ngIf="loading$ | async"></mat-spinner>
+</div> -->
+
+

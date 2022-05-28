@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { AuthUser } from '../../models/auth.model';
 import { AuthLogin } from '../../state/auth.action';
 import { AuthState } from '../../state/auth.state';
 import { AuthUtils } from '../auth.utils';
@@ -13,14 +14,15 @@ import { AuthUtils } from '../auth.utils';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements AfterViewInit {
+export class LoginComponent implements AfterContentInit, OnInit {
 
   @Select(AuthState.error) error$!: Observable<any>;
   @Select(AuthState.loading) loading$!: Observable<boolean>;
   @Select(AuthState.redirect) redirect$!: Observable<boolean>;
+  @Select(AuthState.userCreated) userCreated$!: Observable<AuthUser>;
 
   public form: FormGroup;
-  private authUtils;
+  private _authUtils;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -28,17 +30,21 @@ export class LoginComponent implements AfterViewInit {
     private _snackBar: MatSnackBar,
     private _router: Router) {
 
-    this.authUtils = new AuthUtils();
+    this._authUtils = new AuthUtils();
 
     this.form = this._formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern(this.authUtils.emailRegEx())]],
+      email: ['', [Validators.required, Validators.pattern(this._authUtils.emailRegEx())]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentInit(): void {
     this.showError();
-    this.redirect();
+    this.redirect()
+  }
+
+  ngOnInit(): void {
+    this.setUserEmailAfterRegister();
   }
 
   showError(): void {
@@ -54,6 +60,17 @@ export class LoginComponent implements AfterViewInit {
   redirect(): void {
     this.redirect$.subscribe((redirect: boolean) => {
       if (redirect) this._router.navigate(['home']);
+    });
+  }
+
+  setUserEmailAfterRegister() {
+    this.userCreated$.subscribe((user: AuthUser) => {
+      if (user != null || user != undefined) {
+        this.form.setValue({
+          email: user.email,
+          password: ''
+        });
+      }
     });
   }
 

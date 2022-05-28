@@ -19,7 +19,7 @@
                 </mat-card-actions>
 
                 <app-login *ngIf="renderLogin"></app-login>
-                <app-register *ngIf="renderRegister"></app-register>
+                <app-register *ngIf="renderRegister" (submitted)="isSubmitted($event)"></app-register>
                 
             </mat-card>
 
