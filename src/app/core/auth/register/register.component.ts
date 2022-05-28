@@ -40,7 +40,7 @@ export class RegisterComponent implements AfterContentInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rePassword: ['', [Validators.required, Validators.minLength(6)]],
+      rePassword: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.pattern(this._authUtils.emailRegEx())]],
 
     });
@@ -56,25 +56,15 @@ export class RegisterComponent implements AfterContentInit {
   }
 
   matchPasswords(): boolean {
-    if (this.form?.value?.password?.length >= 6 && this.form.value.rePassword.length >= 6) {
-      return this.form.value.password !== this.form.value.rePassword;
-    }
-    return false;
+    return this._authUtils.matchPasswords(this.form?.value?.password, this.form?.value?.rePassword);
   }
 
   displayPassword(type: string) {
-
-    if (type === 'password') {
-      this.showPassword = !this.showPassword;
-      this.visibilityPassword = this.showPassword ? 'visibility' : 'visibility_off';
-    }
-
-    if (type === 'rePassword') {
-      this.showRePassword = !this.showRePassword;
-      this.visibilityRePassword = this.showRePassword ? 'visibility' : 'visibility_off';
-    }
+    if (type === 'password')
+      this.passwordVisibility();
+    else
+      this.rePasswordVisibility();
   }
-
 
   showError(): void {
     this.error$.subscribe((error: string) => {
@@ -93,6 +83,16 @@ export class RegisterComponent implements AfterContentInit {
         this.submitted.emit(true);
       }
     });
+  }
+
+  passwordVisibility() {
+    this.showPassword = !this.showPassword;
+    this.visibilityPassword = this.showPassword ? 'visibility' : 'visibility_off';
+  }
+
+  rePasswordVisibility() {
+    this.showRePassword = !this.showRePassword;
+    this.visibilityRePassword = this.showRePassword ? 'visibility' : 'visibility_off';
   }
 
 }
