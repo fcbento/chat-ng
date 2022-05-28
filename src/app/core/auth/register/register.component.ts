@@ -40,7 +40,7 @@ export class RegisterComponent implements AfterContentInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rePassword: ['', [Validators.required]],
+      rePassword: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.pattern(this._authUtils.emailRegEx())]],
 
     });
