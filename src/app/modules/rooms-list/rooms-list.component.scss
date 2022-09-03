@@ -1,0 +1,15 @@
+span{
+    color: rgb(78, 78, 78);
+    font-weight: 500;
+    margin-top: 10px;
+    display: block;
+    cursor: pointer;
+
+    &:hover{
+        color: #000;
+    }
+}
+
+.current{ 
+    font-weight: 900;
+}

@@ -15,3 +15,7 @@ export class SessionUser {
     static readonly type = AuthEnum.Session;
     constructor(public user: AuthUser) { }
 }
+
+export class Logout {
+    static readonly type = AuthEnum.Logout;
+}

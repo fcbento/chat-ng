@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { AuthResponse, AuthUser } from "../models/auth.model";
-import { SessionUser } from "./auth.action";
+import { Logout, SessionUser } from "./auth.action";
 
 @State<AuthUser>({
     name: 'user'
@@ -18,5 +18,10 @@ export class SessionState {
     @Action(SessionUser)
     session(ctx: StateContext<AuthResponse>, action: AuthResponse) {
         ctx.patchState({ user: action.user })
+    }
+
+    @Action(Logout)
+    logout(ctx: StateContext<AuthResponse>) {
+        ctx.patchState({ user: undefined })
     }
 }

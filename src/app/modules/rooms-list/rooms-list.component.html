@@ -1,0 +1,6 @@
+<section *ngFor="let room of rooms" (click)="selectRoom(room)">
+     <span [ngClass]="{'current': current?.name === room.name}">
+          <mat-icon inline>{{room.icon}}</mat-icon>
+          {{room.name}}
+     </span>
+</section>

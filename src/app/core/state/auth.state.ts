@@ -4,7 +4,7 @@ import { catchError, finalize, of, tap, throwError } from 'rxjs';
 import { AuthUtils } from '../auth/auth.utils';
 import { AuthResponse, AuthStateModel } from '../models/auth.model';
 import { AuthService } from '../services/auth.service';
-import { AuthLogin, AuthRegister, SessionUser } from './auth.action';
+import { AuthLogin, AuthRegister, Logout, SessionUser } from './auth.action';
 
 @Injectable()
 export class AuthState {
@@ -12,8 +12,7 @@ export class AuthState {
   public utils = new AuthUtils();
 
   constructor(
-    private service: AuthService,
-    private store: Store) { }
+    private service: AuthService) { }
 
   @Selector()
   static error(state: AuthStateModel) {
@@ -42,7 +41,7 @@ export class AuthState {
       .pipe(
         tap((response: AuthResponse) => {
           ctx.patchState({ redirect: true, loading: false });
-          this.store.dispatch(new SessionUser(response.user));
+          ctx.dispatch(new SessionUser(response.user));
         }),
         catchError((e: any) => {
           const error = this.utils.handleError(e);
