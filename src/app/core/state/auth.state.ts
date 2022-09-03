@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { catchError, finalize, map, of } from 'rxjs';
+import { Action, Selector, StateContext, Store } from '@ngxs/store';
+import { catchError, finalize, of, tap, throwError } from 'rxjs';
 import { AuthUtils } from '../auth/auth.utils';
 import { AuthResponse, AuthStateModel } from '../models/auth.model';
 import { AuthService } from '../services/auth.service';
@@ -9,7 +9,7 @@ import { AuthLogin, AuthRegister, SessionUser } from './auth.action';
 @Injectable()
 export class AuthState {
 
-  utils = new AuthUtils();
+  public utils = new AuthUtils();
 
   constructor(
     private service: AuthService,
@@ -40,15 +40,14 @@ export class AuthState {
     ctx.patchState({ loading: true })
     this.service.login(action.auth)
       .pipe(
-        map((response: AuthResponse) => {
-          ctx.patchState({ redirect: true });
-          ctx.patchState({ loading: false });
+        tap((response: AuthResponse) => {
+          ctx.patchState({ redirect: true, loading: false });
           this.store.dispatch(new SessionUser(response.user));
         }),
         catchError((e: any) => {
           const error = this.utils.handleError(e);
-          ctx.patchState({ redirect: false })
-          return of(ctx.patchState({ error: error }));
+          ctx.patchState({ redirect: false, error: error })
+          return throwError(e);
         }),
         finalize(() => ctx.patchState({ loading: false }))
       ).subscribe()
@@ -59,9 +58,8 @@ export class AuthState {
     ctx.patchState({ loading: true })
     this.service.register(action.auth)
       .pipe(
-        map((response: any) => {
-          ctx.patchState({ loading: false });
-          ctx.patchState({ userCreated: response });
+        tap((response: any) => {
+          ctx.patchState({ loading: false, userCreated: response });
         }),
         catchError((e: any) => {
           const error = this.utils.handleError(e);

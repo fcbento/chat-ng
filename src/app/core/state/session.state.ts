@@ -17,6 +17,6 @@ export class SessionState {
 
     @Action(SessionUser)
     session(ctx: StateContext<AuthResponse>, action: AuthResponse) {
-        ctx.patchState({user: action.user})
+        ctx.patchState({ user: action.user })
     }
 }

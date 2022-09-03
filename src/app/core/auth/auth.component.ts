@@ -11,10 +11,7 @@ export class AuthComponent {
   renderRegister = false;
 
   authOption(option: string) {
-    if (option === 'login')
-      this.renderLoginSection();
-    else
-      this.renderRegisterSection();
+    option === 'login' ? this.renderLoginSection() : this.renderRegisterSection();
   }
 
   isSubmitted(value: boolean) {

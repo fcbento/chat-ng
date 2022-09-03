@@ -29,7 +29,7 @@ describe('AuthComponent', () => {
   describe('render auth compnent', () => {
 
     it('should have class container-fluid', () => {
-      const element = fixture.debugElement.query(By.css('.container-fluid'));
+      const element = fixture.debugElement.query(By.css('.contaerereriner-fluid'));
       expect(element).toBeTruthy();
     });
 

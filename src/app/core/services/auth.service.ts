@@ -14,16 +14,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(auth: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API}/user/login`, auth)
-      .pipe(
-        map((response: AuthResponse) => response)
-      );
+    return this.http.post<AuthResponse>(`${this.API}/user/login`, auth).pipe(map((response: AuthResponse) => response));
   }
 
   register(auth: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API}/user`, auth)
-      .pipe(
-        map((response: AuthResponse) => response)
-      );
+    return this.http.post<AuthResponse>(`${this.API}/user`, auth).pipe(map((response: AuthResponse) => response));
   }
 }
