@@ -13,15 +13,12 @@ import { SessionState } from 'src/app/core/state/session.state';
 })
 export class HomeComponent implements OnInit {
 
-  @Select(SessionState.user) user$!: Observable<AuthUser>;
-
   constructor(private store: Store, private router: Router) { }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   logout(): void {
+    console.log('logout')
     this.store.dispatch(new Logout()).subscribe(() => {
       this.router.navigate(['/']);
     });

@@ -1,32 +1,14 @@
-<mat-drawer-container class="row col-xs-12 home-container" autosize *ngIf="(user$ | async); else noUser">
+<mat-drawer-container class="row col-xs-12 home-container" autosize>
 
     <mat-drawer #drawer class="sidenav" mode="side">
         <app-rooms-list></app-rooms-list>
     </mat-drawer>
 
     <div class="sidenav-content">
-        <mat-toolbar>
-            <button mat-icon-button>
-                <mat-icon (click)="drawer.toggle()">menu</mat-icon>
-            </button>
-
-            <span class="welcoming"><strong>{{(user$ | async)?.name}}</strong></span>
-
-            <span class="spacer"></span>
-
-            <button mat-icon-button (click)="logout()">
-                <mat-icon>logout</mat-icon>
-            </button>
-        </mat-toolbar>
+        <app-home-toolbar (drawerToggle)="drawer.toggle()" (logout)="logout()"></app-home-toolbar>
         <div class="content">
             <h1>content</h1>
         </div>
     </div>
 
 </mat-drawer-container>
-
-<ng-template #noUser>
-    <section class="user-not-found">
-        <h1>User not logged. <a href="/">Back</a></h1>
-    </section>
-</ng-template>

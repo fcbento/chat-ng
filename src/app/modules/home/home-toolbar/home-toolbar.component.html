@@ -1,0 +1,13 @@
+<mat-toolbar>
+    <button mat-icon-button>
+        <mat-icon (click)="toggle()">menu</mat-icon>
+    </button>
+
+    <span class="welcoming"><strong>{{(user$ | async)?.name}}</strong></span>
+
+    <span class="spacer"></span>
+
+    <button mat-icon-button (click)="logoutEmit()">
+        <mat-icon>logout</mat-icon>
+    </button>
+</mat-toolbar>

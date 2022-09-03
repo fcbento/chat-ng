@@ -6,11 +6,13 @@ import { ModulesRoutingModule } from './modules-routing.module';
 import { NgxsModule } from '@ngxs/store';
 import { AuthState } from '../core/state/auth.state';
 import { RoomsListComponent } from './rooms-list/rooms-list.component';
+import { HomeToolbarComponent } from './home/home-toolbar/home-toolbar.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    RoomsListComponent
+    RoomsListComponent,
+    HomeToolbarComponent
   ],
   imports: [
     CommonModule,
