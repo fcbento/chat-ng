@@ -26,7 +26,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
     ReactiveFormsModule,
     [NgxsModule.forFeature([AuthState, SessionState])],
     NgxsStoragePluginModule.forRoot({
-      key: 'user'
+      key: ['user', 'room'],
     }),
     HttpClientModule
   ],

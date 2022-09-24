@@ -7,18 +7,22 @@ import { NgxsModule } from '@ngxs/store';
 import { AuthState } from '../core/state/auth.state';
 import { RoomsListComponent } from './rooms-list/rooms-list.component';
 import { HomeToolbarComponent } from './home/home-toolbar/home-toolbar.component';
+import { ChatComponent } from './home/chat/chat.component';
+import { RoomState } from './rooms-list/rooms-list.state';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 @NgModule({
   declarations: [
     HomeComponent,
     RoomsListComponent,
-    HomeToolbarComponent
+    HomeToolbarComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     ModulesRoutingModule,
-    [NgxsModule.forFeature([AuthState])],
+    [NgxsModule.forFeature([AuthState, RoomState])]
   ]
 })
 export class ModulesModule { }
