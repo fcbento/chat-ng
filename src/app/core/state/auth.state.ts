@@ -1,10 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, finalize, of, tap, throwError } from 'rxjs';
 import { AuthUtils } from '../auth/auth.utils';
 import { AuthResponse, AuthStateModel } from '../models/auth.model';
 import { AuthService } from '../services/auth.service';
 import { AuthLogin, AuthRegister, Logout, SessionUser } from './auth.action';
+
+const defaults: AuthStateModel = {
+  error: null,
+  loading: false,
+  redirect: false,
+  userCreated: null
+}
+
+@State<AuthStateModel>({
+  name: 'auth',
+  defaults
+})
 
 @Injectable()
 export class AuthState {
@@ -66,5 +78,10 @@ export class AuthState {
         }),
         finalize(() => ctx.patchState({ loading: false }))
       ).subscribe()
+  }
+
+  @Action(Logout)
+  logout(ctx: StateContext<AuthStateModel>) {
+    ctx.setState(defaults);
   }
 }

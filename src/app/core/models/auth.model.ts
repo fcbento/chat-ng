@@ -14,7 +14,7 @@ export interface AuthStateModel {
     error: any;
     loading: boolean;
     redirect: boolean;
-    userCreated: AuthUser;
+    userCreated: AuthUser | null;
 }
 
 export interface AuthResponse {

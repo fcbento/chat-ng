@@ -20,8 +20,4 @@ export class SessionState {
         ctx.patchState({ user: action.user })
     }
 
-    @Action(Logout)
-    logout(ctx: StateContext<AuthResponse>) {
-        ctx.patchState({ user: undefined })
-    }
 }

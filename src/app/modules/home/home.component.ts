@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
-import { map, Observable } from 'rxjs';
-import { AuthUser } from 'src/app/core/models/auth.model';
+import { Store } from '@ngxs/store';
 import { Logout } from 'src/app/core/state/auth.action';
-import { SessionState } from 'src/app/core/state/session.state';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +15,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {}
 
   logout(): void {
-    console.log('logout')
     this.store.dispatch(new Logout()).subscribe(() => {
       this.router.navigate(['/']);
     });
